@@ -1,0 +1,19 @@
+/* body {
+  background-image: url('http://res.cloudinary.com/dqr2mejhc/image/upload/c_scale,w_626/v1497818772/space_back_2_keyyer.png');
+  background-repeat: repeat;
+} */
+
+#game-canvas {
+    /* position: absolute;
+    left: 15%; */
+    /* background: lightblue; */
+    background-image: url('../assets/1.gif');
+    background-position: center; 
+    display: block;
+    background-repeat: repeat;
+    margin: 0 20px;
+}
+
+#ball {
+    display: none;
+}

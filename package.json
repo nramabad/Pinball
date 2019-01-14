@@ -1,0 +1,23 @@
+{
+  "name": "Pinball",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "webpack --watch --mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nramabad/Pinball.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nramabad/Pinball/issues"
+  },
+  "homepage": "https://github.com/nramabad/Pinball#readme",
+  "devDependencies": {
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
+  }
+}
