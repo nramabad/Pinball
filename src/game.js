@@ -55,8 +55,8 @@ class Game {
             this.highscore = this.score;
         }
 
-        // document.getElementById("test").innerHTML = this.score;
-        // document.getElementById("high").innerHTML = this.highscore;
+        document.getElementById("test").innerHTML = this.score;
+        document.getElementById("high").innerHTML = this.highscore;
 
         if (sPressed === true) {
             this.ball.ballPosX = 445;
@@ -64,7 +64,7 @@ class Game {
             this.ball.ballVelX = 0;
             this.ball.ballVelY = 0;
             this.score = 0;
-            // document.getElementById("test").innerHTML = this.score;
+            document.getElementById("test").innerHTML = this.score;
         }
     }
 
