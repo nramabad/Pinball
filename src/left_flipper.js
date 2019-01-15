@@ -23,15 +23,29 @@ class LeftFlipper {
         this.halfheight = 10;
         this.posY = posY;
         this.mid = { x: 170, y: (this.posY + 480) / 2 };
+        // this.stopAColor = [
+        //     { 'r': '9', 'g': '117', 'b': '190' }, //blue
+        //     { 'r': '59', 'g': '160', 'b': '89' }, //green
+        //     { 'r': '230', 'g': '192', 'b': '39' }, //yellow
+        //     { 'r': '238', 'g': '30', 'b': '77' } //red
+        // ];
+        // this.stopBColor = [
+        //     { 'r': '205', 'g': '24', 'b': '75' }, //pink
+        //     { 'r': '33', 'g': '98', 'b': '155' }, //blue
+        //     { 'r': '64', 'g': '149', 'b': '69' }, //green
+        //     { 'r': '228', 'g': '171', 'b': '33' } //yellow
+        // ];
     }
-
 
     draw(ctx) {
         ctx.beginPath();
-        ctx.moveTo(125, 480);
-        ctx.lineTo(215, this.posY);
-        ctx.lineWidth = 20;
-        ctx.strokeStyle = "#ff69b4";
+        ctx.moveTo(120, 480);
+        ctx.lineTo(210, this.posY);
+        ctx.lineWidth = 10;
+        let grd = ctx.createLinearGradient(125, 480, 215, this.posY);
+        grd.addColorStop(0, "purple");
+        grd.addColorStop(1, "pink");
+        ctx.strokeStyle = grd;
         ctx.stroke();
         ctx.closePath();
         this.posY = this.posY;

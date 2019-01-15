@@ -27,15 +27,14 @@ class RightFlipper {
 
     draw(ctx) {
         ctx.beginPath();
-        ctx.moveTo(350, 480);
-        ctx.lineTo(260, this.posY);
-        ctx.lineWidth = 20;
-        let img = new Image();
-        img.src = `../assets/obj/pinballflipper.png`;
-        // debugger
-        let pat = ctx.createPattern(img, "repeat");
-        ctx.fillStyle = pat;
-        // ctx.strokeStyle = "#ff69b4";
+        ctx.lineCap = "round";
+        ctx.moveTo(345, 480);
+        ctx.lineTo(255, this.posY);
+        ctx.lineWidth = 10;
+        let grd = ctx.createLinearGradient(350, 480, 260, this.posY);
+        grd.addColorStop(0, "purple");
+        grd.addColorStop(1, "pink");
+        ctx.strokeStyle = grd;
         ctx.stroke();
         ctx.closePath();
         this.posY = this.posY;

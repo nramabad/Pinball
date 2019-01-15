@@ -1,19 +1,49 @@
-/* body {
-  background-image: url('http://res.cloudinary.com/dqr2mejhc/image/upload/c_scale,w_626/v1497818772/space_back_2_keyyer.png');
-  background-repeat: repeat;
-} */
+body {
+  background-image: url('../assets/1.gif');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0px -700px; 
+  display: flex;
+  margin: auto;
+}
+
+body:before {
+    content: "";
+    position: absolute;
+    width : 99%;
+    height: 85%;
+    background: inherit;
+    z-index: -1;
+
+    filter        : blur(10px);
+    -moz-filter   : blur(10px);
+    -webkit-filter: blur(10px);
+    -o-filter     : blur(10px);
+
+    transition        : all 2s linear;
+    -moz-transition   : all 2s linear;
+    -webkit-transition: all 2s linear;
+    -o-transition     : all 2s linear;
+}
+
+.column {
+    flex: row;
+    display: inline-block;
+    width: 50%;
+    margin: 100px auto 0px auto;
+    text-align: center;
+}
+
+.rows {
+    
+}
 
 #game-canvas {
-    /* position: absolute;
-    left: 15%; */
-    /* background: lightblue; */
     background-image: url('../assets/1.gif');
     background-position: center; 
     display: block;
     background-repeat: repeat;
-    margin: 0 20px;
+    margin: 0px auto 0px auto;
+    border-radius: 25px;
 }
 
-#ball {
-    display: none;
-}

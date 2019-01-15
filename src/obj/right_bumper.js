@@ -20,8 +20,9 @@ class RightBumper {
         ctx.beginPath();
         ctx.fillStyle = "blue";
         ctx.moveTo(350, 450);
-        ctx.lineTo(420, 450);
-        ctx.lineTo(420, 370);
+        ctx.lineTo(370, 450)
+        ctx.lineTo(420, 400);
+        ctx.lineTo(420, 380);
         ctx.fill();
     }
 }

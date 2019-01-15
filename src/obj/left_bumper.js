@@ -16,13 +16,12 @@ class LeftBump {
     }
 
     draw(ctx) {
-        // let img = document.getElementById('earth');
-        // let earth = ctx.createPattern(img, 'repeat');
         ctx.beginPath();
         ctx.fillStyle = "blue";
-        ctx.moveTo(50, 450);
-        ctx.lineTo(120, 450);
-        ctx.lineTo(50, 370);
+        ctx.moveTo(90, 450);
+        ctx.lineTo(110, 450);
+        ctx.lineTo(40, 380);
+        ctx.lineTo(40, 400)
         ctx.fill();
     }
 }
