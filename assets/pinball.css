@@ -1,13 +1,14 @@
 body {
-  background-image: url('../assets/1.gif');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 0px -700px; 
-  display: flex;
-  margin: auto;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 26px;
-  color: white;
+    background-color: antiquewhite;
+    background-image: url('../assets/1.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0px -700px; 
+    display: flex;
+    margin: auto;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 26px;
+    color: white;
 }
 
 body:before {
