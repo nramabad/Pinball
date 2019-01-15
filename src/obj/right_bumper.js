@@ -15,10 +15,10 @@ class RightBumper {
     }
 
     draw(ctx) {
-        // let img = document.getElementById('earth');
-        // let earth = ctx.createPattern(img, 'repeat');
+        let img = document.getElementById("geom");
+        let geom = ctx.createPattern(img, "repeat");
         ctx.beginPath();
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = geom;
         ctx.moveTo(350, 450);
         ctx.lineTo(370, 450)
         ctx.lineTo(420, 400);

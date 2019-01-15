@@ -3,8 +3,8 @@ const Thruster = require('./obj/thruster');
 
 let ballPosX = 445;
 let ballPosY = 384;
-let gravity = 0.2;
-let elasticity = 0.8;
+let gravity = 0.18;
+let elasticity = 0.7;
 let friction = 0.1;
 
 

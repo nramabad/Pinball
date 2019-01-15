@@ -43,8 +43,8 @@ class LeftFlipper {
         ctx.lineTo(210, this.posY);
         ctx.lineWidth = 10;
         let grd = ctx.createLinearGradient(125, 480, 215, this.posY);
-        grd.addColorStop(0, "purple");
-        grd.addColorStop(1, "pink");
+        grd.addColorStop(0, "#D6A4A4");
+        grd.addColorStop(1, "#DAE2F8");
         ctx.strokeStyle = grd;
         ctx.stroke();
         ctx.closePath();

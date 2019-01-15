@@ -32,8 +32,8 @@ class RightFlipper {
         ctx.lineTo(255, this.posY);
         ctx.lineWidth = 10;
         let grd = ctx.createLinearGradient(350, 480, 260, this.posY);
-        grd.addColorStop(0, "purple");
-        grd.addColorStop(1, "pink");
+        grd.addColorStop(0, "#D6A4A4");
+        grd.addColorStop(1, "#DAE2F8");
         ctx.strokeStyle = grd;
         ctx.stroke();
         ctx.closePath();

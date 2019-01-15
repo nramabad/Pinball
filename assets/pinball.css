@@ -5,6 +5,9 @@ body {
   background-position: 0px -700px; 
   display: flex;
   margin: auto;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 26px;
+  color: white;
 }
 
 body:before {
@@ -34,8 +37,41 @@ body:before {
     text-align: center;
 }
 
-.rows {
-    
+.rows-a {
+    margin: 18%;
+    font-weight: bold;
+}
+
+.rows-a:first-child {
+    font-size: 40px;
+}
+
+.rows-a a {
+    text-decoration: none;
+    color: white;
+    font-weight: normal;
+}
+
+.rows-a img {
+    width:40%;
+}
+
+.rows-a img:hover {
+    opacity: 0.8;
+}
+
+.rows-b {
+    margin: 24%;
+    font-weight: bold;
+}
+
+#controls {
+    font-weight: normal;
+    font-size: 16px;
+}
+
+#meditative, #balzano, #veil-art, #geom {
+    display: none;
 }
 
 #game-canvas {

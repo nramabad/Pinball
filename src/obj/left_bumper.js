@@ -16,8 +16,10 @@ class LeftBump {
     }
 
     draw(ctx) {
+        let img = document.getElementById("geom");
+        let geom = ctx.createPattern(img, "repeat");
         ctx.beginPath();
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = geom;
         ctx.moveTo(90, 450);
         ctx.lineTo(110, 450);
         ctx.lineTo(40, 380);
