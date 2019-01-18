@@ -1,3 +1,3 @@
 # Pinball
 
-[Demo Now!)(https://nramabad.github.io/Pinball/dist/index.html)
+[Demo Now!](https://nramabad.github.io/Pinball/dist/index.html)
