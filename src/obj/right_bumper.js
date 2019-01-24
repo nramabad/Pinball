@@ -21,8 +21,10 @@ class RightBumper {
         ctx.fillStyle = geom;
         ctx.moveTo(350, 450);
         ctx.lineTo(370, 450)
-        ctx.lineTo(420, 400);
-        ctx.lineTo(420, 380);
+        ctx.lineTo(420, 400); // 400
+        ctx.lineTo(420, 300);
+        ctx.lineTo(400, 300);
+        ctx.lineTo(400, 400); // 380
         ctx.fill();
     }
 }

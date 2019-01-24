@@ -22,7 +22,9 @@ class LeftBump {
         ctx.fillStyle = geom;
         ctx.moveTo(90, 450);
         ctx.lineTo(110, 450);
-        ctx.lineTo(40, 380);
+        ctx.lineTo(60, 400);
+        ctx.lineTo(60, 300);
+        ctx.lineTo(40, 300); //was 380
         ctx.lineTo(40, 400)
         ctx.fill();
     }
