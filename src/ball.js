@@ -213,7 +213,7 @@ class Ball {
         // X and Y distance between the ball and the bump
         let distX = Math.abs(this.ballPosX - (obj.mid2.x));
         let distY = Math.abs(this.ballPosY - (obj.mid2.y));
-
+        
         // Distance too far
         if (distX > (obj.halfwidthTwo + this.radius)) { return false; }
         if (distY > (obj.halfheightTwo + this.radius)) { return false; }

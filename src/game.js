@@ -116,9 +116,11 @@ class Game {
             if (this.ball.isCollidedWithLine(bottom_bumpers[k])) {
                 this.ball.hitbackBottomBumper(bottom_bumpers[k]);
                 this.score += 3;
+                // debugger
             } else if (this.ball.isCollidedwithSideBumper(bottom_bumpers[k])) {
                 this.ball.collidewithSideBumper();
                 this.score += 3;
+                // debugger
             }
         }
 
