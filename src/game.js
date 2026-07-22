@@ -30,10 +30,20 @@ export class Game {
         this.rightBumper = new RightBumper();
         this.score = 0;
         this.highscore = 0;
+        this.launched = false;
     }
 
     draw(ctx) {
         ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
+
+        // Hold ball in thruster lane until launched
+        if (!this.launched && this.ball.ballPosX === 445) {
+            this.ball.ballVelX = 0;
+            this.ball.ballVelY = 0;
+            this.ball.ballPosX = 445;
+            this.ball.ballPosY = 384;
+        }
+
         this.thruster.draw(ctx);
         this.ball.draw(ctx);
         this.rightFlipper.draw(ctx);
@@ -54,7 +64,8 @@ export class Game {
 
     step(delta) {
         this.ball.update();
-        if (this.ball.ballPosX === 445 && this.ball.ballPosY + 15 > this.thruster.tposY) {
+        if (this.ball.ballPosX === 445 && this.ball.ballPosY + 15 > this.thruster.tposY && window.downPressed) {
+            this.launched = true;
             this.ball.thrust();
         } else if (this.ball.ballPosX === 445 && this.ball.ballPosY < 80) {
             this.ball.firstReflect();
@@ -99,6 +110,7 @@ export class Game {
         this.ball.ballPosY = 384;
         this.ball.ballVelX = 0;
         this.ball.ballVelY = 0;
+        this.launched = false;
         if (this.score > this.highscore) this.highscore = this.score;
         this.score = 0;
     }

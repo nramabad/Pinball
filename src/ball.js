@@ -17,7 +17,7 @@ export class Ball {
 
     draw(ctx) {
         let img = new Image();
-        img.src = '../assets/cool-color-circle.gif';
+        img.src = 'assets/cool-color-circle.gif';
         let pat = ctx.createPattern(img, 'repeat');
         ctx.beginPath();
         ctx.arc(this.ballPosX, this.ballPosY, this.radius, 0, Math.PI * 2, false);
@@ -129,14 +129,7 @@ export class Ball {
         let distance = Math.sqrt(dx * dx + dy * dy);
         let minDist = this.radius + obj.radius;
 
-        if (distance < minDist && distance > 0 && !obj._bounced) {
-            obj._bounced = true;
-            obj.radius += 1;
-            setTimeout(() => { obj._bounced = false; obj.radius -= 1; }, 200);
-            this._bumperCollision = {
-                nx: dx / distance, ny: dy / distance,
-                overlap: minDist - distance
-            };
+        if (distance < minDist && distance > 0) {
             return true;
         }
         return false;

@@ -51,7 +51,7 @@ class Ball {
   }
   draw(ctx) {
     let img = new Image;
-    img.src = "../assets/cool-color-circle.gif";
+    img.src = "assets/cool-color-circle.gif";
     let pat = ctx.createPattern(img, "repeat");
     ctx.beginPath();
     ctx.arc(this.ballPosX, this.ballPosY, this.radius, 0, Math.PI * 2, false);
@@ -156,18 +156,7 @@ class Ball {
     let dy = this.ballPosY - obj.ballPosY;
     let distance = Math.sqrt(dx * dx + dy * dy);
     let minDist = this.radius + obj.radius;
-    if (distance < minDist && distance > 0 && !obj._bounced) {
-      obj._bounced = true;
-      obj.radius += 1;
-      setTimeout(() => {
-        obj._bounced = false;
-        obj.radius -= 1;
-      }, 200);
-      this._bumperCollision = {
-        nx: dx / distance,
-        ny: dy / distance,
-        overlap: minDist - distance
-      };
+    if (distance < minDist && distance > 0) {
       return true;
     }
     return false;
@@ -468,9 +457,16 @@ class Game {
     this.rightBumper = new right_bumper_default;
     this.score = 0;
     this.highscore = 0;
+    this.launched = false;
   }
   draw(ctx) {
     ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
+    if (!this.launched && this.ball.ballPosX === 445) {
+      this.ball.ballVelX = 0;
+      this.ball.ballVelY = 0;
+      this.ball.ballPosX = 445;
+      this.ball.ballPosY = 384;
+    }
     this.thruster.draw(ctx);
     this.ball.draw(ctx);
     this.rightFlipper.draw(ctx);
@@ -489,7 +485,8 @@ class Game {
   }
   step(delta) {
     this.ball.update();
-    if (this.ball.ballPosX === 445 && this.ball.ballPosY + 15 > this.thruster.tposY) {
+    if (this.ball.ballPosX === 445 && this.ball.ballPosY + 15 > this.thruster.tposY && window.downPressed) {
+      this.launched = true;
       this.ball.thrust();
     } else if (this.ball.ballPosX === 445 && this.ball.ballPosY < 80) {
       this.ball.firstReflect();
@@ -533,6 +530,7 @@ class Game {
     this.ball.ballPosY = 384;
     this.ball.ballVelX = 0;
     this.ball.ballVelY = 0;
+    this.launched = false;
     if (this.score > this.highscore)
       this.highscore = this.score;
     this.score = 0;
