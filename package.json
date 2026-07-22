@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "webpack --watch --mode=development"
+    "build": "NODE_OPTIONS=--openssl-legacy-provider webpack --mode=production"
   },
   "repository": {
     "type": "git",
