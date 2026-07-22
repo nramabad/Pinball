@@ -60,6 +60,8 @@ class Ball {
     ctx.closePath();
   }
   update() {
+    this._prevBallPosX = this.ballPosX;
+    this._prevBallPosY = this.ballPosY;
     this.ballVelY += gravity;
     this.speed = Math.sqrt(this.ballVelX * this.ballVelX + this.ballVelY * this.ballVelY);
     if (this.speed > 0) {
@@ -157,9 +159,20 @@ class Ball {
     let distance = Math.sqrt(dx * dx + dy * dy);
     let minDist = this.radius + obj.radius;
     if (distance < minDist && distance > 0) {
+      let prevDx = (this._prevBallPosX ?? this.ballPosX) - obj.ballPosX;
+      let prevDy = (this._prevBallPosY ?? this.ballPosY) - obj.ballPosY;
+      let prevDist = Math.sqrt(prevDx * prevDx + prevDy * prevDy);
+      let nx, ny;
+      if (prevDist > 0) {
+        nx = prevDx / prevDist;
+        ny = prevDy / prevDist;
+      } else {
+        nx = dx / distance;
+        ny = dy / distance;
+      }
       this._bumperCollision = {
-        nx: dx / distance,
-        ny: dy / distance,
+        nx,
+        ny,
         overlap: minDist - distance
       };
       return true;
@@ -536,6 +549,8 @@ class Game {
     this.ball.ballVelX = 0;
     this.ball.ballVelY = 0;
     this.launched = false;
+    this.thruster.tposY = 400;
+    this.thruster.tposYMax = 0;
     if (this.score > this.highscore)
       this.highscore = this.score;
     this.score = 0;

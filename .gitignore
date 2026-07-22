@@ -1,1 +1,4 @@
 /node_modules
+/.playwright-mcp
+/.claude/HANDOFF.md
+/.claude/handoff.md

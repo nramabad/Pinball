@@ -27,6 +27,8 @@ export class Ball {
     }
 
     update() {
+        this._prevBallPosX = this.ballPosX;
+        this._prevBallPosY = this.ballPosY;
         this.ballVelY += gravity;
         this.speed = Math.sqrt(this.ballVelX * this.ballVelX + this.ballVelY * this.ballVelY);
         if (this.speed > 0) {
@@ -130,8 +132,22 @@ export class Ball {
         let minDist = this.radius + obj.radius;
 
         if (distance < minDist && distance > 0) {
+            // Use direction from previous position to avoid tunneling:
+            // when ball passes through the bumper center in one frame,
+            // the current-position normal points the wrong way.
+            let prevDx = (this._prevBallPosX ?? this.ballPosX) - obj.ballPosX;
+            let prevDy = (this._prevBallPosY ?? this.ballPosY) - obj.ballPosY;
+            let prevDist = Math.sqrt(prevDx * prevDx + prevDy * prevDy);
+            let nx, ny;
+            if (prevDist > 0) {
+                nx = prevDx / prevDist;
+                ny = prevDy / prevDist;
+            } else {
+                nx = dx / distance;
+                ny = dy / distance;
+            }
             this._bumperCollision = {
-                nx: dx / distance, ny: dy / distance,
+                nx, ny,
                 overlap: minDist - distance
             };
             return true;

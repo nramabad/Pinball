@@ -111,6 +111,8 @@ export class Game {
         this.ball.ballVelX = 0;
         this.ball.ballVelY = 0;
         this.launched = false;
+        this.thruster.tposY = 400;
+        this.thruster.tposYMax = 0;
         if (this.score > this.highscore) this.highscore = this.score;
         this.score = 0;
     }
