@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "bun build --target=browser ./src/pinball.js --outdir ./dist && mv dist/pinball.js dist/main.js"
+    "build": "bun build --target=browser --format=iife ./src/pinball.js --outdir ./dist && mv dist/pinball.js dist/main.js"
   },
   "repository": {
     "type": "git",
