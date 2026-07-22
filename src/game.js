@@ -1,30 +1,23 @@
-const Thruster = require('./obj/thruster');
-const Ball = require('./ball');
-const RightFlipper = require('./right_flipper');
-const LeftFlipper = require('./left_flipper');
-const BumperOne = require('./obj/bumper_one');
-const BumperTwo = require('./obj/bumper_two');
-const BumperThree = require('./obj/bumper_three');
-const LeftBumper = require('./obj/left_bumper');
-const RightBumper = require('./obj/right_bumper');
+import Thruster from './obj/thruster.js';
+import Ball from './ball.js';
+import RightFlipper from './right_flipper.js';
+import LeftFlipper from './left_flipper.js';
+import BumperOne from './obj/bumper_one.js';
+import BumperTwo from './obj/bumper_two.js';
+import BumperThree from './obj/bumper_three.js';
+import LeftBumper from './obj/left_bumper.js';
+import RightBumper from './obj/right_bumper.js';
 
-let sPressed = false;
+window.sPressed = false;
 
-document.addEventListener("keydown", SpaceHandler, false);
-document.addEventListener("keyup", SpaceHandlerUp, false);
+document.addEventListener("keydown", (e) => { if (e.keyCode === 32) window.sPressed = true; });
+document.addEventListener("keyup", (e) => { if (e.keyCode === 32) window.sPressed = false; });
+document.addEventListener("keydown", (e) => { if (e.keyCode === 37) window.lPressed = true; });
+document.addEventListener("keyup", (e) => { if (e.keyCode === 37) window.lPressed = false; });
+document.addEventListener("keydown", (e) => { if (e.keyCode === 39) window.rPressed = true; });
+document.addEventListener("keyup", (e) => { if (e.keyCode === 39) window.rPressed = false; });
 
-function SpaceHandler(e) {
-    if (e.keyCode === 32) {
-        sPressed = true;
-    }
-}
-function SpaceHandlerUp(e) {
-    if (e.keyCode === 32) {
-        sPressed = false;
-    }
-}
-
-class Game {
+export class Game {
     constructor() {
         this.thruster = new Thruster();
         this.ball = new Ball();
@@ -51,81 +44,54 @@ class Game {
         this.leftBumper.draw(ctx);
         this.rightBumper.draw(ctx);
 
-        if (this.score > this.highscore) {
-            this.highscore = this.score;
-        }
+        if (this.score > this.highscore) this.highscore = this.score;
 
         document.getElementById("test").innerHTML = this.score;
         document.getElementById("high").innerHTML = this.highscore;
 
-        if (sPressed === true) {
-            this.resetBall();
-        }
+        if (window.sPressed) this.resetBall();
     }
 
     step(delta) {
-        // Update ball physics BEFORE collision checking
         this.ball.update();
-
-        // Thruster Ball Starting Movement
-        if (this.ball.ballPosX === 445 &&
-            this.ball.ballPosY + 15 > this.thruster.tposY) {
-            this.ball.thrust(delta);
+        if (this.ball.ballPosX === 445 && this.ball.ballPosY + 15 > this.thruster.tposY) {
+            this.ball.thrust();
         } else if (this.ball.ballPosX === 445 && this.ball.ballPosY < 80) {
-            this.ball.firstReflect(delta);
+            this.ball.firstReflect();
         }
-
         this.checkCollisions();
     }
 
     checkCollisions() {
-        // Flipper Collision
-        const flippers = this.flippers();
-        for (let i = 0; i < flippers.length; i++) {
-            if (this.ball.isCollidedWithLine(flippers[i])) {
-                this.ball.hitbackFlipper(flippers[i]);
-            }
+        const flippers = [this.rightFlipper, this.leftFlipper];
+        for (const f of flippers) {
+            if (this.ball.isCollidedWithLine(f)) this.ball.hitbackFlipper(f);
         }
 
-        // Wall Collision
-        if (this.ball.ballPosY <= (0 + this.ball.radius)) {
-            this.ball.collidewithTopWall();
-        } else if (this.ball.ballPosX >= (Game.DIM_X - this.ball.radius)) {
-            this.ball.collidewithRightWall();
-        } else if (this.ball.ballPosX <= this.ball.radius) {
-            this.ball.collidewithLeftWall();
-        }
+        if (this.ball.ballPosY <= this.ball.radius) this.ball.collidewithTopWall();
+        else if (this.ball.ballPosX >= Game.DIM_X - this.ball.radius) this.ball.collidewithRightWall();
+        else if (this.ball.ballPosX <= this.ball.radius) this.ball.collidewithLeftWall();
 
-        // Bumper Collision
-        const bumpers = this.bumpers();
+        const bumpers = [this.bumperOne, this.bumperTwo, this.bumperThree];
         for (let j = 0; j < bumpers.length; j++) {
             if (this.ball.isCollidedWithBumpers(bumpers[j])) {
                 this.ball.hitbackBumper(bumpers[j]);
-                if (j === 2) {
-                    this.score += 7;
-                } else {
-                    this.score += 5;
-                }
+                this.score += (j === 2) ? 7 : 5;
             }
         }
 
-        const bottom_bumpers = this.bottom_bumpers();
-        for (let k = 0; k < bottom_bumpers.length; k++) {
-            if (this.ball.isCollidedWithLine(bottom_bumpers[k])) {
-                this.ball.hitbackBottomBumper(bottom_bumpers[k]);
+        const bottomBumpers = [this.leftBumper, this.rightBumper];
+        for (const bb of bottomBumpers) {
+            if (this.ball.isCollidedWithLine(bb)) {
+                this.ball.hitbackBottomBumper(bb);
                 this.score += 3;
-            } else if (this.ball.isCollidedwithSideBumper(bottom_bumpers[k])) {
+            } else if (this.ball.isCollidedwithSideBumper(bb)) {
                 this.ball.collidewithSideBumper();
                 this.score += 3;
             }
         }
 
-        // Drain detection — ball fell off the bottom of the table
-        if (this.ball.ballPosY > Game.DIM_Y + 30) {
-            this.resetBall();
-        }
-
-
+        if (this.ball.ballPosY > Game.DIM_Y + 30) this.resetBall();
     }
 
     resetBall() {
@@ -133,28 +99,13 @@ class Game {
         this.ball.ballPosY = 384;
         this.ball.ballVelX = 0;
         this.ball.ballVelY = 0;
-        if (this.score > this.highscore) {
-            this.highscore = this.score;
-        }
+        if (this.score > this.highscore) this.highscore = this.score;
         this.score = 0;
     }
-
-    flippers() {
-        return [].concat(this.rightFlipper, this.leftFlipper);
-    }
-
-    bumpers() {
-        return [].concat(this.bumperOne, this.bumperTwo, this.bumperThree);
-    }
-
-    bottom_bumpers() {
-        return [].concat(this.leftBumper, this.rightBumper);
-    }
-
 }
-
-module.exports = Game;
 
 Game.DIM_X = 470;
 Game.DIM_Y = 570;
 Game.BG_COLOR = 'white';
+
+export default Game;
