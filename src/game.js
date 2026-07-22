@@ -36,8 +36,8 @@ export class Game {
     draw(ctx) {
         ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
-        // Hold ball in thruster lane until launched
-        if (!this.launched && this.ball.ballPosX === 445) {
+        // Hold ball in thruster lane only when thruster is at rest
+        if (!this.launched && this.ball.ballPosX === 445 && this.thruster.tposY === 400) {
             this.ball.ballVelX = 0;
             this.ball.ballVelY = 0;
             this.ball.ballPosX = 445;
@@ -64,7 +64,7 @@ export class Game {
 
     step(delta) {
         this.ball.update();
-        if (this.ball.ballPosX === 445 && this.ball.ballPosY + 15 > this.thruster.tposY && window.downPressed) {
+        if (this.ball.ballPosX === 445 && this.ball.ballPosY + 15 > this.thruster.tposY) {
             this.launched = true;
             this.ball.thrust();
         } else if (this.ball.ballPosX === 445 && this.ball.ballPosY < 80) {

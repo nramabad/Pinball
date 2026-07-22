@@ -130,6 +130,10 @@ export class Ball {
         let minDist = this.radius + obj.radius;
 
         if (distance < minDist && distance > 0) {
+            this._bumperCollision = {
+                nx: dx / distance, ny: dy / distance,
+                overlap: minDist - distance
+            };
             return true;
         }
         return false;

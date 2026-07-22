@@ -157,6 +157,11 @@ class Ball {
     let distance = Math.sqrt(dx * dx + dy * dy);
     let minDist = this.radius + obj.radius;
     if (distance < minDist && distance > 0) {
+      this._bumperCollision = {
+        nx: dx / distance,
+        ny: dy / distance,
+        overlap: minDist - distance
+      };
       return true;
     }
     return false;
@@ -461,7 +466,7 @@ class Game {
   }
   draw(ctx) {
     ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
-    if (!this.launched && this.ball.ballPosX === 445) {
+    if (!this.launched && this.ball.ballPosX === 445 && this.thruster.tposY === 400) {
       this.ball.ballVelX = 0;
       this.ball.ballVelY = 0;
       this.ball.ballPosX = 445;
@@ -485,7 +490,7 @@ class Game {
   }
   step(delta) {
     this.ball.update();
-    if (this.ball.ballPosX === 445 && this.ball.ballPosY + 15 > this.thruster.tposY && window.downPressed) {
+    if (this.ball.ballPosX === 445 && this.ball.ballPosY + 15 > this.thruster.tposY) {
       this.launched = true;
       this.ball.thrust();
     } else if (this.ball.ballPosX === 445 && this.ball.ballPosY < 80) {
