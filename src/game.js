@@ -59,16 +59,14 @@ class Game {
         document.getElementById("high").innerHTML = this.highscore;
 
         if (sPressed === true) {
-            this.ball.ballPosX = 445;
-            this.ball.ballPosY = 384;
-            this.ball.ballVelX = 0;
-            this.ball.ballVelY = 0;
-            this.score = 0;
-            document.getElementById("test").innerHTML = this.score;
+            this.resetBall();
         }
     }
 
     step(delta) {
+        // Update ball physics BEFORE collision checking
+        this.ball.update();
+
         // Thruster Ball Starting Movement
         if (this.ball.ballPosX === 445 &&
             this.ball.ballPosY + 15 > this.thruster.tposY) {
@@ -98,7 +96,7 @@ class Game {
             this.ball.collidewithLeftWall();
         }
 
-        // BumperCollision
+        // Bumper Collision
         const bumpers = this.bumpers();
         for (let j = 0; j < bumpers.length; j++) {
             if (this.ball.isCollidedWithBumpers(bumpers[j])) {
@@ -116,15 +114,29 @@ class Game {
             if (this.ball.isCollidedWithLine(bottom_bumpers[k])) {
                 this.ball.hitbackBottomBumper(bottom_bumpers[k]);
                 this.score += 3;
-                // debugger
             } else if (this.ball.isCollidedwithSideBumper(bottom_bumpers[k])) {
                 this.ball.collidewithSideBumper();
                 this.score += 3;
-                // debugger
             }
         }
 
+        // Drain detection — ball fell off the bottom of the table
+        if (this.ball.ballPosY > Game.DIM_Y + 30) {
+            this.resetBall();
+        }
 
+
+    }
+
+    resetBall() {
+        this.ball.ballPosX = 445;
+        this.ball.ballPosY = 384;
+        this.ball.ballVelX = 0;
+        this.ball.ballVelY = 0;
+        if (this.score > this.highscore) {
+            this.highscore = this.score;
+        }
+        this.score = 0;
     }
 
     flippers() {

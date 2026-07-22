@@ -53,7 +53,7 @@ class RightFlipper {
 
     flipRightUp(ctx) {
         this.posY -= 15;
-        this.mid = { x: 170, y: (this.posY + 480) / 2 };
+        this.mid = { x: 305, y: (this.posY + 480) / 2 };
         // this.playFlip();
     }
 
@@ -65,7 +65,7 @@ class RightFlipper {
 
     flipRightDown(ctx) {
         this.posY += 15;
-        this.mid = { x: 170, y: (this.posY + 480) / 2 };
+        this.mid = { x: 305, y: (this.posY + 480) / 2 };
     }
 }
 
