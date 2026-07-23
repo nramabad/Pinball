@@ -131,7 +131,9 @@ export class Ball {
         let distance = Math.sqrt(dx * dx + dy * dy);
         let minDist = this.radius + obj.radius;
 
-        if (distance < minDist && distance > 0) {
+        // Standard overlap check (no && distance > 0 — that would miss
+        // collisions when the ball center is exactly at the bumper center)
+        if (distance < minDist) {
             // Use direction from previous position to avoid tunneling:
             // when ball passes through the bumper center in one frame,
             // the current-position normal points the wrong way.
@@ -142,15 +144,62 @@ export class Ball {
             if (prevDist > 0) {
                 nx = prevDx / prevDist;
                 ny = prevDy / prevDist;
-            } else {
+            } else if (distance > 0) {
                 nx = dx / distance;
                 ny = dy / distance;
+            } else {
+                // Both current and previous distance are 0 — safe default
+                nx = 0;
+                ny = -1;
             }
             this._bumperCollision = {
                 nx, ny,
                 overlap: minDist - distance
             };
             return true;
+        }
+
+        // Tunneling check: test the line segment from prevPos to currentPos
+        // against the bumper circle. Catches balls that fly completely past
+        // the bumper in a single frame.
+        let prevX = this._prevBallPosX ?? this.ballPosX;
+        let prevY = this._prevBallPosY ?? this.ballPosY;
+        let segDx = this.ballPosX - prevX;
+        let segDy = this.ballPosY - prevY;
+        let segLen = Math.sqrt(segDx * segDx + segDy * segDy);
+        if (segLen > minDist * 0.5) {
+            let dirX = segDx / segLen;
+            let dirY = segDy / segLen;
+
+            // Vector from bumper center to segment start (prevPos)
+            let fX = prevX - obj.ballPosX;
+            let fY = prevY - obj.ballPosY;
+
+            // Solve quadratic: |prev + t*dir - center|^2 = minDist^2
+            let a = dirX * dirX + dirY * dirY; // always 1
+            let b = 2 * (fX * dirX + fY * dirY);
+            let c = fX * fX + fY * fY - minDist * minDist;
+
+            let discriminant = b * b - 4 * a * c;
+            if (discriminant > 0) {
+                let t = (-b - Math.sqrt(discriminant)) / (2 * a);
+                if (t > 0 && t < 1) {
+                    // Intersection point on the bumper surface
+                    let ix = prevX + t * segDx;
+                    let iy = prevY + t * segDy;
+                    let nxd = ix - obj.ballPosX;
+                    let nyd = iy - obj.ballPosY;
+                    let nd = Math.sqrt(nxd * nxd + nyd * nyd);
+                    if (nd > 0) {
+                        this._bumperCollision = {
+                            nx: nxd / nd,
+                            ny: nyd / nd,
+                            overlap: 1
+                        };
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }
