@@ -33,6 +33,9 @@ jobs:
       - name: Copy assets
         run: cp -r assets dist/
 
+      - name: Copy index.html
+        run: cp index.html dist/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
