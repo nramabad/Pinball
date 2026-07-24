@@ -1,21 +1,31 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background-color: antiquewhite;
     background-image: url('../assets/1.gif');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 0px -700px; 
+    background-position: 0px -700px;
     display: flex;
-    margin: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
     font-family: "Courier New", Courier, monospace;
     font-size: 26px;
     color: white;
+    min-height: 100vh;
 }
 
 body:before {
     content: "";
-    position: absolute;
-    width : 99%;
-    height: 85%;
+    position: fixed;
+    width : 100%;
+    height: 100%;
     background: inherit;
     z-index: -1;
 
@@ -31,10 +41,12 @@ body:before {
 }
 
 .column {
-    flex: row;
-    display: inline-block;
-    width: 50%;
-    margin: 100px auto 0px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 33%;
+    margin: 0;
     text-align: center;
 }
 
