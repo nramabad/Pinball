@@ -183,7 +183,7 @@ export class Ball {
             let discriminant = b * b - 4 * a * c;
             if (discriminant > 0) {
                 let t = (-b - Math.sqrt(discriminant)) / (2 * a);
-                if (t > 0 && t < 1) {
+                if (t > 0 && t < segLen) {
                     // Intersection point on the bumper surface
                     let ix = prevX + t * segDx;
                     let iy = prevY + t * segDy;
