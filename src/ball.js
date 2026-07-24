@@ -232,6 +232,39 @@ export class Ball {
         this._collisionData = null;
     }
 
+    isCollidedWithRect(obj) {
+        if (!obj.rect) return false;
+        let { left, top, right, bottom } = obj.rect;
+        let cx = this.ballPosX, cy = this.ballPosY, r = this.radius;
+
+        // Find closest point on the rectangle to the circle center
+        let closestX = Math.max(left, Math.min(cx, right));
+        let closestY = Math.max(top, Math.min(cy, bottom));
+
+        let dx = cx - closestX;
+        let dy = cy - closestY;
+        let dist2 = dx * dx + dy * dy;
+
+        if (dist2 >= r * r) return false;
+
+        let dist = Math.sqrt(dist2);
+
+        if (dist === 0) {
+            // Ball center is inside the rectangle — push toward nearest edge
+            let dl = cx - left, dr = right - cx, dt = cy - top, db = bottom - cy;
+            let minD = Math.min(dl, dr, dt, db);
+            if (minD === dl) { this._collisionData = { px: left, py: cy, nx: -1, ny: 0, dist: dl }; }
+            else if (minD === dr) { this._collisionData = { px: right, py: cy, nx: 1, ny: 0, dist: dr }; }
+            else if (minD === dt) { this._collisionData = { px: cx, py: top, nx: 0, ny: -1, dist: dt }; }
+            else { this._collisionData = { px: cx, py: bottom, nx: 0, ny: 1, dist: db }; }
+            return true;
+        }
+
+        // Normal from closest point toward ball center
+        this._collisionData = { px: closestX, py: closestY, nx: dx / dist, ny: dy / dist, dist };
+        return true;
+    }
+
     isCollidedwithSideBumper(obj) {
         if (obj.sidePos1 && obj.sidePos2) {
             let ax = obj.sidePos1.x, ay = obj.sidePos1.y;

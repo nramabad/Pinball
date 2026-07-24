@@ -96,6 +96,9 @@ export class Game {
             if (this.ball.isCollidedWithLine(bb)) {
                 this.ball.hitbackBottomBumper(bb);
                 this.score += 3;
+            } else if (this.ball.isCollidedWithRect(bb)) {
+                this.ball.hitbackBottomBumper(bb);
+                this.score += 3;
             } else if (this.ball.isCollidedwithSideBumper(bb)) {
                 this.ball.collidewithSideBumper();
                 this.score += 3;

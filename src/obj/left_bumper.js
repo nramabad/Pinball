@@ -10,6 +10,7 @@ export class LeftBump {
         this.halfheight = 25;
         this.halfwidthTwo = 0.5;
         this.halfheightTwo = 50;
+        this.rect = { left: 40, top: 300, right: 60, bottom: 400 };
     }
 
     draw(ctx) {

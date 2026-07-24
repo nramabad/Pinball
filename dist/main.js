@@ -158,7 +158,7 @@ class Ball {
     let dy = this.ballPosY - obj.ballPosY;
     let distance = Math.sqrt(dx * dx + dy * dy);
     let minDist = this.radius + obj.radius;
-    if (distance < minDist && distance > 0) {
+    if (distance < minDist) {
       let prevDx = (this._prevBallPosX ?? this.ballPosX) - obj.ballPosX;
       let prevDy = (this._prevBallPosY ?? this.ballPosY) - obj.ballPosY;
       let prevDist = Math.sqrt(prevDx * prevDx + prevDy * prevDy);
@@ -166,9 +166,12 @@ class Ball {
       if (prevDist > 0) {
         nx = prevDx / prevDist;
         ny = prevDy / prevDist;
-      } else {
+      } else if (distance > 0) {
         nx = dx / distance;
         ny = dy / distance;
+      } else {
+        nx = 0;
+        ny = -1;
       }
       this._bumperCollision = {
         nx,
@@ -177,14 +180,47 @@ class Ball {
       };
       return true;
     }
+    let prevX = this._prevBallPosX ?? this.ballPosX;
+    let prevY = this._prevBallPosY ?? this.ballPosY;
+    let segDx = this.ballPosX - prevX;
+    let segDy = this.ballPosY - prevY;
+    let segLen = Math.sqrt(segDx * segDx + segDy * segDy);
+    if (segLen > minDist * 0.5) {
+      let dirX = segDx / segLen;
+      let dirY = segDy / segLen;
+      let fX = prevX - obj.ballPosX;
+      let fY = prevY - obj.ballPosY;
+      let a = dirX * dirX + dirY * dirY;
+      let b = 2 * (fX * dirX + fY * dirY);
+      let c = fX * fX + fY * fY - minDist * minDist;
+      let discriminant = b * b - 4 * a * c;
+      if (discriminant > 0) {
+        let t = (-b - Math.sqrt(discriminant)) / (2 * a);
+        if (t > 0 && t < segLen) {
+          let ix = prevX + t * segDx;
+          let iy = prevY + t * segDy;
+          let nxd = ix - obj.ballPosX;
+          let nyd = iy - obj.ballPosY;
+          let nd = Math.sqrt(nxd * nxd + nyd * nyd);
+          if (nd > 0) {
+            this._bumperCollision = {
+              nx: nxd / nd,
+              ny: nyd / nd,
+              overlap: 1
+            };
+            return true;
+          }
+        }
+      }
+    }
     return false;
   }
   hitbackBumper(obj) {
     if (!this._bumperCollision)
       return;
     let { nx, ny, overlap } = this._bumperCollision;
-    this.ballPosX += nx * (overlap + 1);
-    this.ballPosY += ny * (overlap + 1);
+    this.ballPosX += nx * (overlap + this.radius);
+    this.ballPosY += ny * (overlap + this.radius);
     let dot = this.ballVelX * nx + this.ballVelY * ny;
     if (dot < 0) {
       this.ballVelX -= 2 * dot * nx;
@@ -206,6 +242,36 @@ class Ball {
       this.ballVelY -= 2 * dot * ny;
     }
     this._collisionData = null;
+  }
+  isCollidedWithRect(obj) {
+    if (!obj.rect)
+      return false;
+    let { left, top, right, bottom } = obj.rect;
+    let cx = this.ballPosX, cy = this.ballPosY, r = this.radius;
+    let closestX = Math.max(left, Math.min(cx, right));
+    let closestY = Math.max(top, Math.min(cy, bottom));
+    let dx = cx - closestX;
+    let dy = cy - closestY;
+    let dist2 = dx * dx + dy * dy;
+    if (dist2 >= r * r)
+      return false;
+    let dist = Math.sqrt(dist2);
+    if (dist === 0) {
+      let dl = cx - left, dr = right - cx, dt = cy - top, db = bottom - cy;
+      let minD = Math.min(dl, dr, dt, db);
+      if (minD === dl) {
+        this._collisionData = { px: left, py: cy, nx: -1, ny: 0, dist: dl };
+      } else if (minD === dr) {
+        this._collisionData = { px: right, py: cy, nx: 1, ny: 0, dist: dr };
+      } else if (minD === dt) {
+        this._collisionData = { px: cx, py: top, nx: 0, ny: -1, dist: dt };
+      } else {
+        this._collisionData = { px: cx, py: bottom, nx: 0, ny: 1, dist: db };
+      }
+      return true;
+    }
+    this._collisionData = { px: closestX, py: closestY, nx: dx / dist, ny: dy / dist, dist };
+    return true;
   }
   isCollidedwithSideBumper(obj) {
     if (obj.sidePos1 && obj.sidePos2) {
@@ -390,6 +456,7 @@ class LeftBump {
     this.halfheight = 25;
     this.halfwidthTwo = 0.5;
     this.halfheightTwo = 50;
+    this.rect = { left: 40, top: 300, right: 60, bottom: 400 };
   }
   draw(ctx) {
     let geom = ctx.createPattern(document.getElementById("geom"), "repeat");
@@ -419,6 +486,7 @@ class RightBumper {
     this.halfheight = 25;
     this.halfwidthTwo = 0.5;
     this.halfheightTwo = 50;
+    this.rect = { left: 400, top: 300, right: 420, bottom: 400 };
   }
   draw(ctx) {
     let geom = ctx.createPattern(document.getElementById("geom"), "repeat");
@@ -533,6 +601,9 @@ class Game {
     const bottomBumpers = [this.leftBumper, this.rightBumper];
     for (const bb of bottomBumpers) {
       if (this.ball.isCollidedWithLine(bb)) {
+        this.ball.hitbackBottomBumper(bb);
+        this.score += 3;
+      } else if (this.ball.isCollidedWithRect(bb)) {
         this.ball.hitbackBottomBumper(bb);
         this.score += 3;
       } else if (this.ball.isCollidedwithSideBumper(bb)) {
