@@ -207,8 +207,8 @@ export class Ball {
     hitbackBumper(obj) {
         if (!this._bumperCollision) return;
         let { nx, ny, overlap } = this._bumperCollision;
-        this.ballPosX += nx * (overlap + 1);
-        this.ballPosY += ny * (overlap + 1);
+        this.ballPosX += nx * (overlap + this.radius);
+        this.ballPosY += ny * (overlap + this.radius);
         let dot = this.ballVelX * nx + this.ballVelY * ny;
         if (dot < 0) {
             this.ballVelX -= 2 * dot * nx;
