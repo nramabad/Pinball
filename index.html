@@ -4,6 +4,7 @@
 <head>
     <title>Pinball
     </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="assets/pinball.css">
     <link rel="shortcut icon" type="image/png" href="assets/pinball.ico" />
     <meta property='og:title' content='Pinball'/>
@@ -39,6 +40,23 @@
     <img src="assets/veil-art.jpg" id='veil-art' />
     <img src="assets/geom.jpg" id='geom' />
     <!-- <img src="assets/geometric.gif" id='ball' /> -->
+    <div id="touch-bar">
+        <button class="touch-btn" id="btn-left"
+            ontouchstart="window.lPressed=true"
+            ontouchend="window.lPressed=false"
+            ontouchcancel="window.lPressed=false">&#8592;</button>
+        <button class="touch-btn" id="btn-launch"
+            ontouchstart="window.downPressed=true"
+            ontouchend="window.downPressed=false"
+            ontouchcancel="window.downPressed=false">&#8595;</button>
+        <button class="touch-btn" id="btn-right"
+            ontouchstart="window.rPressed=true"
+            ontouchend="window.rPressed=false"
+            ontouchcancel="window.rPressed=false">&#8594;</button>
+        <button class="touch-btn" id="btn-restart"
+            ontouchstart="window.sPressed=true;setTimeout(function(){window.sPressed=false},200)"
+            ontouchend="window.sPressed=false">Reset</button>
+    </div>
 </body>
 
 </html>

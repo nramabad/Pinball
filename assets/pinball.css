@@ -94,10 +94,154 @@ body:before {
 
 #game-canvas {
     background-image: url('../assets/1.gif');
-    background-position: center; 
+    background-position: center;
     display: block;
     background-repeat: repeat;
     margin: 0px auto 0px auto;
     border-radius: 25px;
+}
+
+/* Touch bar for mobile */
+#touch-bar {
+    display: none;
+}
+
+.touch-btn {
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+/* Mobile-friendly layout */
+@media only screen and (max-width: 768px) {
+    body {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 10px;
+        min-height: 100vh;
+        height: auto;
+        background-position: center;
+    }
+
+    body:before {
+        display: none;
+    }
+
+    .column {
+        width: 100%;
+    }
+
+    .column:first-child {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 10px;
+        order: 0;
+    }
+
+    .rows-a {
+        margin: 4px 8px;
+        font-size: 14px;
+    }
+
+    .rows-a:first-child {
+        font-size: 20px;
+        width: 100%;
+    }
+
+    .rows-a img {
+        width: 24px;
+    }
+
+    .column:last-child {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 16px;
+        padding: 0 10px;
+        order: 2;
+    }
+
+    .rows-b {
+        margin: 4px 8px;
+        font-size: 14px;
+    }
+
+    #controls {
+        font-size: 12px;
+    }
+
+    .score {
+        font-size: 12px;
+    }
+
+    .column:nth-child(2) {
+        order: 1;
+    }
+
+    #game-canvas {
+        width: 100%;
+        height: auto;
+        max-width: 470px;
+        border-radius: 12px;
+    }
+
+    .touch-bar {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        padding: 12px 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        z-index: 100;
+    }
+
+    .touch-btn {
+        flex: 1;
+        max-width: 100px;
+        padding: 14px 8px;
+        font-size: 13px;
+        font-family: "Courier New", Courier, monospace;
+        font-weight: bold;
+        color: white;
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .touch-btn:active {
+        background: rgba(255, 255, 255, 0.35);
+    }
+
+    #touch-launch {
+        background: rgba(76, 175, 80, 0.4);
+        border-color: rgba(76, 175, 80, 0.6);
+    }
+
+    #touch-launch:active {
+        background: rgba(76, 175, 80, 0.7);
+    }
+
+    #touch-restart {
+        background: rgba(244, 67, 54, 0.3);
+        border-color: rgba(244, 67, 54, 0.5);
+    }
+
+    #touch-restart:active {
+        background: rgba(244, 67, 54, 0.6);
+    }
+
+    /* Add bottom padding so content isn't hidden behind fixed touch bar */
+    body {
+        padding-bottom: 80px;
+    }
 }
 
